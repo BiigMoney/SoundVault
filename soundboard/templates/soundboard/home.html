@@ -1,0 +1,6 @@
+{% extends "soundboard/base.html" %} {% block content %}
+<div class="container">
+  <h1>Soundboard home!</h1>
+  <div class="row">{% for sound in sounds %} {% block section %} {% include 'soundboard/sound.html' %} {% endblock %} {% endfor %}</div>
+</div>
+{% endblock content%}
