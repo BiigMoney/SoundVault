@@ -1,41 +1,54 @@
-<section>
-  <div class="col-md-3">
-    <div class="card" style="width: 16rem">
-      <div class="card-body">
+<div class="col-md-3" style="margin-bottom: 10px">
+  <div class="card" style="width: 16rem">
+    <div class="card-body">
+      {% if sound.uploader == user %}
+      <div style="margin-bottom: 1rem">
         {% if detail %}
-        <h5 class="card-title">{{sound.name}}</h5>
+        <h5 class="card-title" style="display: inline">{{sound.name}}</h5>
         {% else %}
-        <h5 class="card-title"><a href="{% url 'sound-detail' sound.pk %}"> {{sound.name}}</a></h5>
+        <h5 class="card-title" style="display: inline"><a href="{% url 'sound-detail' sound.pk %}"> {{sound.name}}</a></h5>
         {% endif %}
-        <p class="card-text">By: {{sound.uploader}}</p>
-        <p class="card-text">Likes {{sound.likes.all.count}}</p>
+        <form method="POST" action="{% url 'sound-delete' sound.pk %}" style="display: inline; float: right">
+          {% csrf_token %}
+          <input hidden name="next" value="{{request.path}}" />
+          <button class="btn btn-primary" type="submit">
+            <span><i class="bi bi-trash"></i></span>
+          </button>
+        </form>
       </div>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item" style="display: flex">
-          <div class="row">
-            <div class="col-sm">
-              <button class="btn btn-primary" onclick="playSound('{{sound.soundFile.url}}')" id="{{sound.soundFile.url}}">
-                <span><i class="bi bi-play-fill"></i></span>
-              </button>
-            </div>
-            <div class="col-sm">
-              <form method="POST" action="{% url 'like-sound' sound.pk %}">
-                {% csrf_token %}
-                <input type="hidden" name="next" value="{{ request.path }}" />
-                {% if user not in sound.likes.all %}
-                <button type="submit" class="btn btn-primary">
-                  <span><i class="bi bi-hand-thumbs-up"></i></span>
-                </button>
-                {% else %}
-                <button type="submit" class="btn btn-outline-primary">
-                  <span><i class="bi bi-hand-thumbs-up-fill"></i></span>
-                </button>
-                {% endif %}
-              </form>
-            </div>
-          </div>
-        </li>
-      </ul>
+      {% else %} {% if detail %}
+      <h5 class="card-title">{{sound.name}}</h5>
+      {% else %}
+      <h5 class="card-title"><a href="{% url 'sound-detail' sound.pk %}"> {{sound.name}}</a></h5>
+      {% endif %} {% endif %}
+      <p class="card-text">By: {{sound.uploader}}</p>
+      <p class="card-text">Likes {{sound.likes.all.count}}</p>
     </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item" style="display: flex">
+        <div class="row">
+          <div class="col-sm">
+            <button class="btn btn-primary" onclick="playSound('{{sound.soundFile.url}}')" id="{{sound.soundFile.url}}">
+              <span><i class="bi bi-play-fill"></i></span>
+            </button>
+          </div>
+          <div class="col-sm">
+            <form method="POST" action="{% url 'like-sound' sound.pk %}">
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ request.path }}" />
+              {% if user not in sound.likes.all %}
+              <button type="submit" class="btn btn-primary">
+                <span><i class="bi bi-hand-thumbs-up"></i></span>
+              </button>
+              {% else %}
+              <button type="submit" class="btn btn-outline-primary">
+                <span><i class="bi bi-hand-thumbs-up-fill"></i></span>
+              </button>
+              {% endif %}
+            </form>
+          </div>
+        </div>
+      </li>
+    </ul>
   </div>
-</section>
+</div>

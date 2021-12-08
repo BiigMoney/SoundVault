@@ -39,7 +39,11 @@ class SoundDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Sound
 
     def test_func(self):
-        return self.request.user == self.get_object().uploaderId
+        return self.request.user == self.get_object().uploader
+
+
+    def get_success_url(self):
+        return self.request.POST.get('next', '/')
 
 
 class LikeView(LoginRequiredMixin, View):
