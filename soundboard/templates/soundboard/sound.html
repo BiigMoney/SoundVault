@@ -8,13 +8,9 @@
         {% else %}
         <h5 class="card-title" style="display: inline"><a href="{% url 'sound-detail' sound.pk %}"> {{sound.name}}</a></h5>
         {% endif %}
-        <form method="POST" action="{% url 'sound-delete' sound.pk %}" style="display: inline; float: right">
-          {% csrf_token %}
-          <input hidden name="next" value="{{request.path}}" />
-          <button class="btn btn-primary" type="submit">
-            <span><i class="bi bi-trash"></i></span>
-          </button>
-        </form>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#{{sound.pk}}" style="display: inline; float: right">
+          <span><i class="bi bi-trash"></i></span>
+        </button>
       </div>
       {% else %} {% if detail %}
       <h5 class="card-title">{{sound.name}}</h5>
@@ -50,5 +46,28 @@
         </div>
       </li>
     </ul>
+  </div>
+  <div class="modal fade" id="{{sound.pk}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Are you sure?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h6>Once a sound is deleted it cannot be recovered.</h6>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <form method="POST" action="{% url 'sound-delete' sound.pk %}" style="display: inline; float: right">
+            {% csrf_token %}
+            <input hidden name="next" value="{{request.path}}" />
+            <button class="btn btn-primary" type="submit">Confirm</button>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
