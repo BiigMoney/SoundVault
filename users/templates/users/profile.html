@@ -1,6 +1,10 @@
 {% extends 'soundboard/base.html' %}{% block content %}
-<div class="container">
-  <h2>Username: {{user.username}}</h2>
+<div class="container" style="margin-top: 20px">
+  <h2>{{user.username}}</h2>
+  <br />
+  <h5>Sounds uploaded: {{sound_count}}</h5>
+  <h5>Likes: {{like_count}}</h5>
+  <br />
   <div class="row">{% for sound in sounds %} {% block section %} {% include 'soundboard/sound.html' %} {% endblock %} {% endfor %}</div>
 </div>
 {% endblock content %}

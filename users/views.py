@@ -23,9 +23,16 @@ def register(request):
 class ProfileView(View):
     def get(self, request, pk, *args, **kwargs):
         user = User.objects.get(pk=pk)
+        sounds = Sound.objects.filter(uploader=user)
+        likes = 0
+        for sound in sounds:
+            likes+=sound.likes.count()
         context = {
-            'sounds': Sound.objects.filter(uploader=user),
-            'user': user
+            'sounds': sounds,
+            'user': user,
+            'sound_count': len(sounds),
+            'like_count': likes,
+
         }
 
         return render(request, 'users/profile.html', context)
