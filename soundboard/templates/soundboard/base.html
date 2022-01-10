@@ -27,7 +27,7 @@
             <a class="nav-link" href="{% url 'sound-create'%}">Add Sound</a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="#">SoundVault Desktop</a>
+            <a class="nav-link" href="{% url 'sound-vault-pro' %}">SoundVault Desktop</a>
           </li>
         </ul>
 
@@ -37,7 +37,7 @@
             <a class="nav-link dropdown-toggle" href="/" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{user.username}}</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <a class="dropdown-item" href="{% url 'profile' user.pk %}"> My Sounds </a>
-              <a class="dropdown-item" href="#"> Settings </a>
+              <a class="dropdown-item" href="{% url 'settings' %}"> Settings </a>
               <a class="dropdown-item" href="{% url 'logout' %}"> Log Out </a>
             </div>
           </li>
@@ -53,7 +53,7 @@
         <div class="col"></div>
         <div class="col-8">
           {% if messages %} {% for message in messages %}
-          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+          <div class="alert alert-{{ message.tags }}" style="overflow: hidden">{{ message }}</div>
           {% endfor %} {% endif %}
         </div>
         <div class="col"></div>

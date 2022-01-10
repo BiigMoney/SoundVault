@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserRegisterForm
-from django.views.generic import View
+from django.views.generic import View, ListView
 from soundboard.models import Sound
+from django import forms
 from django.contrib.auth.models import User
-
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 def register(request):
     if request.method == 'POST':
@@ -19,20 +20,51 @@ def register(request):
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
 
+class UserUpdateForm(forms.ModelForm):
+    email = forms.EmailField()
 
-class ProfileView(View):
-    def get(self, request, pk, *args, **kwargs):
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+
+class SettingsView(View, LoginRequiredMixin):
+    def get(self, request, *args, **kwargs):
+        form = UserUpdateForm(instance=request.user)
+
+        context = {
+            "form": form
+        }
+
+        return render(request, 'users/settings.html', context)
+
+    def post(self, request, *args, **kwargs):
+        form = UserUpdateForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your account has successfully been updated.')
+            return redirect('home')
+        else:
+            context = {
+                "form": form
+            }
+            return render(request, 'users/settings.html', context)
+
+class ProfileView(ListView):
+    model = Sound
+    template_name = 'users/profile.html'
+    context_object_name = "sounds"
+    ordering = ['-createdAt']
+    paginate_by = 20
+
+    def get_context_data(self, **kwargs):
+        pk = self.kwargs['pk']
         user = User.objects.get(pk=pk)
         sounds = Sound.objects.filter(uploader=user)
         likes = 0
         for sound in sounds:
             likes+=sound.likes.count()
-        context = {
-            'sounds': sounds,
-            'user': user,
-            'sound_count': len(sounds),
-            'like_count': likes,
-
-        }
-
-        return render(request, 'users/profile.html', context)
+        context  = super().get_context_data(**kwargs)
+        context['user'] = user
+        context['sound_count'] = len(sounds)
+        context['like_count'] = likes
+        return context

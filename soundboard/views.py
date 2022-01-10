@@ -66,3 +66,6 @@ class LikeView(LoginRequiredMixin, View):
 
         redirect = request.POST.get('next', '/')
         return HttpResponseRedirect(redirect)
+
+def sound_vault_pro(request):
+    return render(request, 'soundboard/desktop.html')

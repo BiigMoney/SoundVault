@@ -27,9 +27,9 @@ with open('django_project/secret.json', 'r') as file:
 SECRET_KEY = secrets['django_secret']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '24.67.112.53']
 
 
 # Application definition
