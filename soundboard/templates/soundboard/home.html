@@ -1,5 +1,6 @@
-{% extends "soundboard/base.html" %} {% block content %}
+{% extends "soundboard/base.html" %} {% block content %} {% if not page_obj.has_previous %}
 <h1 style="text-align: center">Welcome to the SoundVault!</h1>
+{% endif %}
 <div class="row">{% for sound in sounds %} {% block section %} {% include 'soundboard/sound.html' %} {% endblock %} {% endfor %}</div>
 <div style="text-align: center; display: block; margin-top: 25px">
   {% if is_paginated %} {% if page_obj.has_previous %}

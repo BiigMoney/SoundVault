@@ -53,8 +53,8 @@ class ProfileView(ListView):
     model = Sound
     template_name = 'users/profile.html'
     context_object_name = "sounds"
-    ordering = ['-createdAt']
-    paginate_by = 20
+    ordering = ['-id']
+    paginate_by = 12
 
     def get_context_data(self, **kwargs):
         pk = self.kwargs['pk']
@@ -68,3 +68,6 @@ class ProfileView(ListView):
         context['sound_count'] = len(sounds)
         context['like_count'] = likes
         return context
+
+    def get_queryset(self):
+        return Sound.objects.filter(uploader=User.objects.get(pk=self.kwargs['pk'])).order_by('-id')

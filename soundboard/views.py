@@ -10,8 +10,8 @@ class SoundListView(ListView):
     model = Sound
     template_name = 'soundboard/home.html'
     context_object_name = "sounds"
-    ordering = ['-createdAt']
-    paginate_by = 20
+    ordering = ['-id']
+    paginate_by = 12
 
 
 class SoundDetailView(DetailView):
