@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 import json
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,7 +27,7 @@ with open('django_project/secret.json', 'r') as file:
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = secrets['django_secret']
+SECRET_KEY = os.environ['django_secret']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False 
@@ -84,10 +87,10 @@ WSGI_APPLICATION = 'django_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': "sounds",
-        "USER": secrets['mysql_user'], 
-        "PASSWORD" : secrets['mysql_password'],
-        "HOST": secrets['mysql_host'],
+        'NAME': "soundvault",
+        "USER": os.environ['mysql_user'], 
+        "PASSWORD" : os.environ['mysql_password'],
+        "HOST": os.environ['mysql_host'],
         "PORT": "3306"
     }
 }
@@ -145,7 +148,7 @@ MEDIA_URL = '/media/'
 LOGIN_URL = '/login'
 
 AWS_ACCESS_KEY_ID = "AKIA5P4V2FYIELS32BXF"
-AWS_SECRET_ACCESS_KEY = secrets['aws_secret']
+AWS_SECRET_ACCESS_KEY = os.environ['aws_secret']
 AWS_STORAGE_BUCKET_NAME = "my-bucket-of-sounds"
 
 AWS_S3_FILE_OVERWRITE = False
